@@ -22,9 +22,9 @@ var createScene = function () {
 
 var scene = createScene();
 var snake = new Snake(new Point(0,0));
-snake.move();
+
 engine.runRenderLoop(function () {
-    engine.getDeltaTime();
+    snake.move();
     sphere.position.z += speed * (engine.getDeltaTime() / 1000);
     scene.render();
 });
