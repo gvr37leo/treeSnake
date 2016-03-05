@@ -5,5 +5,7 @@
     <content url="file://$MODULE_DIR$" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="babylon" level="application" />
+    <orderEntry type="library" name="treeSnake node_modules" level="project" />
+    <orderEntry type="library" name="socket.io" level="application" />
   </component>
 </module>

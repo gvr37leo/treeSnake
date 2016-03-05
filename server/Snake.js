@@ -1,3 +1,6 @@
+var BodyPart = require("BodyPart");
+var Point = require("Point");
+
 var Snake = function Snake(point){
     this.head = point;
     this.velocity = new Point(1, 0);

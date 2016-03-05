@@ -28,3 +28,7 @@ engine.runRenderLoop(function () {
     sphere.position.z += speed * (engine.getDeltaTime() / 1000);
     scene.render();
 });
+
+window.addEventListener('resize', function(){
+	engine.resize();
+});
