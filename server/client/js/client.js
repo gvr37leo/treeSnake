@@ -1,4 +1,4 @@
-var socket = io.connect("http://localhost:8000");
+var socket = io.connect("https://treesnake.herokuapp.com/");
 var canvas = document.querySelector("#renderCanvas");
 var engine = new BABYLON.Engine(canvas, true);
 
