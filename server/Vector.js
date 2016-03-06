@@ -2,23 +2,24 @@
  * only integers
  * @constructor
  */
-
-var Point = function Point(x, y, z){
+var Vector = function Vector(x, y, z){
     this.x = x;
     this.y = y;
     this.z = z;
 };
 
-Point.prototype.add = function(point){
-    this.x += point.x;
-    this.y += point.y;
-    this.z += point.z;
+Vector.prototype.add = function(vector){
+    this.x += vector.x;
+    this.y += vector.y;
+    this.z += vector.z;
 };
 
-Point.prototype.clone = function(){
-    return new Point(this.x, this.y, this.z);
+Vector.prototype.clone = function(){
+    return new Vector(this.x, this.y, this.z);
 };
 
-Point.prototype.equals = function(point){
-    return this.x == point.x && this.y == point.y && this.z == point.z
+Vector.prototype.equals = function(vector){
+    return this.x == vector.x && this.y == vector.y && this.z == vector.z
 };
+
+module.exports = Vector;
