@@ -51,3 +51,7 @@ function createScene(data){
     });
     return scene;
 }
+
+window.addEventListener('resize', function(){
+    engine.resize();
+});
