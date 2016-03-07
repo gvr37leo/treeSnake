@@ -18,7 +18,7 @@ server.listen(port, function(){
 });
 
 var players = [];
-var candy = new Vector(1,5,1);
+var candy = Vector.random(6);
 
 setInterval(function () {
     updateSnakes();
@@ -61,5 +61,6 @@ io.on("connection",function(socket){
 function updateSnakes(){
     players.forEach(function(entry){
         entry.snake.move();
+        candy = entry.snake.tryToEatCandy(candy);
     })
 }

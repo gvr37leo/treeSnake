@@ -22,4 +22,9 @@ Vector.prototype.equals = function(vector){
     return this.x == vector.x && this.y == vector.y && this.z == vector.z
 };
 
+Vector.random = function(spread){
+    var halfSpread = Math.floor(spread / 2);
+    return new Vector(Math.floor(Math.random() * spread) - halfSpread, Math.floor(Math.random() * spread) - halfSpread, Math.floor(Math.random() * spread) - halfSpread);
+};
+
 module.exports = Vector;

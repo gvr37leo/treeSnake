@@ -1,12 +1,28 @@
-var socket = io.connect("https://treesnake.herokuapp.com/");
+//"https://treesnake.herokuapp.com/"
+var socket = io.connect("http://localhost:8000");
 var canvas = document.querySelector("#renderCanvas");
 var engine = new BABYLON.Engine(canvas, true);
+var scene = new BABYLON.Scene(engine);
+scene.clearColor = new BABYLON.Color3(0, 0, 0);
+var blood = new BABYLON.StandardMaterial("texture1",scene);
+blood.diffuseColor = new BABYLON.Color3(1, 0, 0);
+var grass = new BABYLON.StandardMaterial("texture2",scene);
+grass.diffuseColor = new BABYLON.Color3(0, 1, 0);
+var water = new BABYLON.StandardMaterial("texture3",scene);
+water.diffuseColor = new BABYLON.Color3(0, 0, 1);
+var camera = new BABYLON.FreeCamera("camera1", new BABYLON.Vector3(0, 10, -10), scene);
+camera.setTarget(BABYLON.Vector3.Zero());
+var light = new BABYLON.PointLight("Omni", new BABYLON.Vector3(0, 10, -10), scene);
+var meshes = [];
 
 window.addEventListener('keydown',doKeyDown);
 socket.on('update', function (data) {
     console.log(data);
-    var scene = createScene(data);
+    scene = populateScene(data);
     scene.render();
+    meshes.forEach(function(mesh){
+        mesh.dispose();
+    })
 });
 
 function doKeyDown(e){
@@ -30,23 +46,13 @@ function doKeyDown(e){
     }
 }
 
-function createScene(data){
-    var scene = new BABYLON.Scene(engine);
-    scene.clearColor = new BABYLON.Color3(0, 0, 0);
-    var camera = new BABYLON.FreeCamera("camera1", new BABYLON.Vector3(0, 10, -10), scene);
-    camera.setTarget(BABYLON.Vector3.Zero());
-    var light = new BABYLON.PointLight("Omni", new BABYLON.Vector3(0, 10, -10), scene);
-
-    var blood = new BABYLON.StandardMaterial("texture",scene);
-    blood.diffuseColor = new BABYLON.Color3(1, 0, 0);
-    var ground = BABYLON.Mesh.CreateGround("ground1", 6, 6, 2, scene);
+function populateScene(data){
+    var candy = BABYLON.Mesh.CreateSphere("sphere1", 16, 1, scene);
+    candy.position = new BABYLON.Vector3(data.candy.x, data.candy.y, data.candy.z);
+    meshes.push(candy);
     data.players.forEach(function(player){
-        player.snake.bodyParts.forEach(function(bodypart, index){
-            var sphere = BABYLON.Mesh.CreateSphere("sphere1", 16, 1, scene);
-            sphere.material = blood;
-            sphere.position.x = bodypart.position.x;
-            sphere.position.y = bodypart.position.y + 0.5;
-            sphere.position.z = bodypart.position.z;
+        player.snake.bodyParts.forEach(function(bodyPart){
+            meshes.push(createBodypartMesh(bodyPart));
         })
     });
     return scene;
@@ -55,3 +61,20 @@ function createScene(data){
 window.addEventListener('resize', function(){
     engine.resize();
 });
+
+function createBodypartMesh(bodypart){
+    var sphere = BABYLON.Mesh.CreateSphere("sphere1", 16, 1, scene);
+
+    switch (bodypart.position.y){
+        case 0:
+            sphere.material = blood;
+            break;
+        case 1:
+            sphere.material = grass;
+            break;
+        default:
+            sphere.material = water;
+    }
+    sphere.position = new BABYLON.Vector3(bodypart.position.x,bodypart.position.y,bodypart.position.z);
+    return sphere;
+}
